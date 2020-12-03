@@ -25,6 +25,10 @@ enum OpType{      //运算符类型
     OP_MUL,       // *
     OP_DIV,       // /
     OP_MOD,       // %
+    OP_PRE_INC,   // 前++
+    OP_PRE_DEC,   // 前--
+    OP_POS_INC,   // 后++
+    OP_POS_DEC,   // 后--
     OP_ASSIGN,    // =
     OP_ADD_ASSI,  // +=
     OP_SUB_ASSI,  // -=
@@ -34,18 +38,20 @@ enum OpType{      //运算符类型
     OP_AND,       // &&
     OP_OR,        // ||
     OP_NOT,       // !
+    OP_ADDR       // &
 };
 
 enum StmtType {  //语句类型
     STMT_SKIP,   //空语句
-    STMT_DECL,   //声明语句
+    STMT_DECL,   //声明
+    STMT_FUNC,   //函数
     STMT_IF,     //if语句
     STMT_WHILE,  //while语句
     STMT_FOR,    //for语句
     STMT_ASSI,   //赋值语句
     STMT_PRINTF, //标准输出语句
     STMT_SCANF,  //标准输入语句
-    STMT_RETURN  
+    STMT_RETURN  //返回
 };
 
 struct TreeNode {

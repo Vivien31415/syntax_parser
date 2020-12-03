@@ -17,7 +17,14 @@ STRING \".+\"
 ID [[:alpha:]_][[:alpha:][:digit:]_]*
 %%
 
-{BLOCKCOMMENT}  /* do nothing */
+{BLOCKCOMMENT} {
+    unsigned int i=0,line=0;
+    for(;i<strlen(yytext);i++){
+        if(yytext[i]=='\n')
+            line++;
+    }
+    lineno+=line;
+}
 {LINECOMMENT}  /* do nothing */
 
 "int" return T_INT;
@@ -40,6 +47,8 @@ ID [[:alpha:]_][[:alpha:][:digit:]_]*
 "*" return MUL;
 "/" return DIV;
 "%" return MOD;
+"++" return INC;
+"--" return DEC;
 "+=" return ADD_ASSI;
 "-=" return SUB_ASSI;
 "*=" return MUL_ASSI;
@@ -54,13 +63,13 @@ ID [[:alpha:]_][[:alpha:][:digit:]_]*
 "&&" return AND;
 "||" return OR;
 "!" return NOT;
+"&" return ADDR;
 ";" return SEMICOLON;
 "," return COMMA;
 "(" return LPAREN;
 ")" return RPAREN;
 "{" {
     scopestack[++sp]=scopenum++;
-    symbolnum=0;
     return LBRACE;
 }
 "}" {

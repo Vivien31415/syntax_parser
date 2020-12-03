@@ -2,6 +2,8 @@
 int NODEID;
 
 void TreeNode::addChild(TreeNode* child) {
+    if(!child)
+        return;
     if(this->child){
         //给没有兄弟的孩子添加兄弟
         TreeNode* p=this->child;
@@ -14,6 +16,8 @@ void TreeNode::addChild(TreeNode* child) {
 }
 
 void TreeNode::addSibling(TreeNode* sibling){
+    if(!sibling)
+        return;
     if(this->sibling){
         //给没有兄弟的兄弟添加兄弟
         TreeNode* p=this->sibling;
@@ -89,11 +93,26 @@ void TreeNode::printSpecialInfo() {
         case NODE_VAR:
             if(!this->varID)
                 cout<<this->var_name<<"未定义！";
-            else
+            else{
                 cout<<"类型: "<<left<<setw(10)<<this->type->getTypeInfo()
                     <<"名称: "<<setw(12)<<this->var_name
                     <<"作用域: "<<setw(6)<<this->symtableID
                     <<"符号表索引: "<<setw(6)<<this->varID;
+                if(this->type->type==COMPOSE_FUNCTION){
+                    if(this->type->retType)
+                        cout<<"返回值"<<left<<setw(8)<<this->type->retType->getTypeInfo();
+                    Type* p=this->type->paramType;
+                    if(p)
+                        cout<<"参数类型";
+                    else
+                        cout<<"无参数";
+                    while(p){
+                        cout<<left<<setw(8)<<p->getTypeInfo();
+                        p=p->sibling;
+                    }
+                        
+                }
+            }
             break;
         case NODE_EXPR:
             cout<<"运算符: "<<left<<setw(6)<<TreeNode::opType2String(this->optype);
@@ -128,7 +147,9 @@ string TreeNode::sType2String(StmtType type) {
         case STMT_SKIP:
             return "空语句";
         case STMT_DECL:
-            return "声明语句";
+            return "声明";
+        case STMT_FUNC:
+            return "函数";
         case STMT_IF:
             return "if语句";
         case STMT_WHILE:
@@ -138,9 +159,9 @@ string TreeNode::sType2String(StmtType type) {
         case STMT_ASSI:
             return "赋值语句";
         case STMT_PRINTF:
-            return "标准输出语句";
+            return "printf语句";
         case STMT_SCANF:
-            return "标准输入语句";
+            return "scanf语句";
         case STMT_RETURN:
             return "返回语句";
         default:
@@ -174,6 +195,14 @@ string TreeNode::opType2String (OpType type){
             return "/";
         case OP_MOD:
             return "%";
+        case OP_PRE_INC:
+            return "前++";
+        case OP_POS_INC:
+            return "后++";
+        case OP_PRE_DEC:
+            return "前--";
+        case OP_POS_DEC:
+            return "后--";
         case OP_ASSIGN:
             return "=";
         case OP_ADD_ASSI:
@@ -192,6 +221,8 @@ string TreeNode::opType2String (OpType type){
             return "||";
         case OP_NOT:
             return "!";
+        case OP_ADDR:
+            return "&";
         default:
             cerr << "shouldn't reach here, optype";
             assert(0);

@@ -6,7 +6,7 @@ extern int NODEID;
 extern int yydebug;
 
 int main(){
-    yydebug=1;
+    //yydebug=1;  //open yacc debug
     yyparse();
     NODEID=0;
     if(root) {

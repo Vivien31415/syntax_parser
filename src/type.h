@@ -3,10 +3,12 @@
 #include "pch.h"
 
 enum ValueType{
+    VALUE_VOID,
     VALUE_BOOL,
     VALUE_INT,
     VALUE_CHAR,
     VALUE_STRING,
+    VALUE_ADDR,
     COMPOSE_STRUCT,
     COMPOSE_UNION,
     COMPOSE_FUNCTION
@@ -17,20 +19,21 @@ public:
     ValueType type;
     Type(ValueType valueType);
     
-public:  
+public: 
     /* 如果你要设计复杂类型系统的话，可以修改这一部分 */
-    ValueType* childType; // for union or struct
-    ValueType* paramType, retType; // for function
-    ValueType* sibling;   // 复杂类型中多个子类型
+    Type* childType; // for union or struct or addr
+    Type* paramType;
+    Type* retType; // for function
+    Type* sibling;   // 复杂类型中多个子类型
     void addChild(Type* t);
     void addParam(Type* t);
-    void addRet(Type* t);
 
 public:
     string getTypeInfo();   //返回类型名
 };
 
 // 设置几个常量Type，用于构建树结点，可以节省空间开销
+static Type* TYPE_VOID = new Type(VALUE_VOID);
 static Type* TYPE_INT = new Type(VALUE_INT);
 static Type* TYPE_CHAR = new Type(VALUE_CHAR);
 static Type* TYPE_BOOL = new Type(VALUE_BOOL);

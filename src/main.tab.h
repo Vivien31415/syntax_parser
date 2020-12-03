@@ -91,8 +91,13 @@ extern int yydebug;
     DIV = 301,
     MOD = 302,
     NOT = 303,
-    UPLUS = 304,
-    UMINUS = 305
+    INC = 304,
+    DEC = 305,
+    UPLUS = 306,
+    UMINUS = 307,
+    ADDR = 308,
+    POST_INC = 309,
+    POST_DEC = 310
   };
 #endif
 

@@ -36,8 +36,8 @@ testall:
 test:
 	./bin/main <./tests/test.c >./tests/test.res
 
-test0:
-	./bin/main <./tests/0.c >./tests/0.res
+test1:
+	./bin/main <./tests/1.c >./tests/1.res
 
-debug0:
-	gdb --args ./bin/main ./tests/0.c
+debug:
+	gdb ./bin/main
